@@ -17,11 +17,11 @@ class	Contact
 		~Contact();
 		void	setContact(std::string fn, std::string ln, std::string nn,
 							std::string pn, std::string ds);
-		std::string	getFirstName();
-		std::string	getLastName();
-		std::string	getNicname();
-		std::string	getPhoneNumber();
-		std::string	getDarkestSecret();
+		std::string	getFirstName() const;
+		std::string	getLastName() const;
+		std::string	getNickname() const;
+		std::string	getPhoneNumber() const;
+		std::string	getDarkestSecret() const;
 };
 
 #endif

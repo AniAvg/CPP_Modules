@@ -5,6 +5,7 @@ int	main()
 {
 	PhoneBook	pb;
 	std::string	cmd;
+	int			index
 
 	while (1)
 	{
@@ -16,7 +17,15 @@ int	main()
 		}
 		else if (cmd == "SEARCH")
 		{
-			pb.displayContacts();//
+			pb.displayContacts();
+			std::cout << "Enter the intex of contact (0-7): " << std::endl;
+			std::cin >> index;
+			if (index >= 0 && index <= 7)
+			{
+				//search index;
+			}
+			else
+				std::cout << "Index is out of range." << std::endl;
 		}
 		else if (cmd == "EXIT")
 			break;
