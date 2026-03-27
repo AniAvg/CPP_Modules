@@ -5,15 +5,17 @@ int	main()
 {
 	PhoneBook	pb;
 	std::string	cmd;
-	int			index
+	int			index;
 
 	while (1)
 	{
 		std::cout << "Enter the command: " << std::endl;
 		std::getline(std::cin, cmd);
+		if (std::cin.eof())
+			break;
 		if (cmd == "ADD")
 		{
-			pb.addContact();//
+			pb.addContact();
 		}
 		else if (cmd == "SEARCH")
 		{
