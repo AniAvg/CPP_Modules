@@ -11,7 +11,7 @@ Contact::~Contact()
 void	Contact::setContact(std::string fn, std::string ln,
 							std::string nn, std::string pn, std::string ds)
 {
-	first_name == fn;
+	first_name = fn;
 	last_name = ln;
 	nickname = nn;
 	phone_number = pn;

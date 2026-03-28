@@ -1,5 +1,6 @@
 #include "Contact.hpp"
 #include "PhoneBook.hpp"
+#include <sstream>
 
 int	main()
 {
@@ -20,11 +21,25 @@ int	main()
 		else if (cmd == "SEARCH")
 		{
 			pb.displayContacts();
-			std::cout << "Enter the intex of contact (0-7): " << std::endl;
-			std::cin >> index;
+			std::string idx_str;
+			std::cout << "Enter the index of contact (0-7): ";
+			std::getline(std::cin, idx_str);
+			if (idx_str.empty())
+			{
+				std::cout << "No index entered." << std::endl;
+				continue;
+			}
+			{
+				std::istringstream iss(idx_str);
+				if (!(iss >> index))
+				{
+					std::cout << "Invalid index input." << std::endl;
+					continue;
+				}
+			}
 			if (index >= 0 && index <= 7)
 			{
-				//search index;
+				pb.searchContact(index);
 			}
 			else
 				std::cout << "Index is out of range." << std::endl;
