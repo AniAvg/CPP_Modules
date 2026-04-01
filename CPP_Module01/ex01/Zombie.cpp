@@ -4,9 +4,15 @@ Zombie::Zombie()
 {
 }
 
+Zombie::Zombie(std::string name)
+{
+	this->name = name;
+	std::cout << this->name << " created." << std::endl;
+}
 
 Zombie::~Zombie()
 {
+	std::cout << this->name << " died." << std::endl;
 }
 
 std::string	Zombie::getZombieName()
