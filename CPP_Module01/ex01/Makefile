@@ -3,10 +3,10 @@ NAME = moar_brainz
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCs = Zombie.cpp zombieHorde.cpp \
+SRCS = Zombie.cpp zombieHorde.cpp \
 		main.cpp
 
-OBJS = $(SRCs:.cpp=.o)
+OBJS = $(SRCS:.cpp=.o)
 
 
 all: $(NAME)

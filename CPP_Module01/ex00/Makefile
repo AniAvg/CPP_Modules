@@ -3,10 +3,10 @@ NAME = BraiiiiiiinnnzzzZ
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCs = Zombie.cpp newZombie.cpp randomChump.cpp \
+SRCS = Zombie.cpp newZombie.cpp randomChump.cpp \
 		main.cpp
 
-OBJS = $(SRCs:.cpp=.o)
+OBJS = $(SRCS:.cpp=.o)
 
 
 all: $(NAME)

@@ -3,10 +3,10 @@ NAME = Unnecessary_violence
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCs = Weapon.cpp HumanA.cpp  HumanB.cpp\
+SRCS = Weapon.cpp HumanA.cpp  HumanB.cpp\
 		main.cpp
 
-OBJS = $(SRCs:.cpp=.o)
+OBJS = $(SRCS:.cpp=.o)
 
 
 all: $(NAME)

@@ -3,9 +3,9 @@ NAME = hi_this_is_brain
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCs = main.cpp
+SRCS = main.cpp
 
-OBJS = $(SRCs:.cpp=.o)
+OBJS = $(SRCS:.cpp=.o)
 
 
 all: $(NAME)
