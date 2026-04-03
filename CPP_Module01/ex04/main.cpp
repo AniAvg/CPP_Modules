@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
-	std::ofstream	outfile(std::string(argv[1]) + ".replace");
+	std::ofstream	outfile((std::string(argv[1]) + ".replace").c_str());
 	if (!outfile.is_open())
 	{
 		std::cerr << "Couldn't create output file" << std::endl;
@@ -39,7 +39,7 @@ int	main(int argc, char **argv)
 	while (std::getline(file, line))
 	{
 		std::string	newline;
-		size_t	pos = 1;
+		size_t	pos = 0;
 		size_t found;
 		while ((found = line.find(s1, pos)) != std::string::npos)
 		{
