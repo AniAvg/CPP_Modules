@@ -7,4 +7,5 @@ int	main()
 	zombie = newZombie("Foo");
 	std::cout << zombie->getZombieName() << std::endl;
 	randomChump("Tupoy");
+	delete zombie;
 }
