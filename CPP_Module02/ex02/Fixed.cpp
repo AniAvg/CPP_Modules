@@ -107,22 +107,22 @@ bool	Fixed::operator!=(const Fixed &other) const
 
 
 //  arithmetic operators
-Fixed	Fixed::operator+(const Fixed &other) const
+Fixed	Fixed::operator+(const Fixed &other)
 {
 	return (this->toFloat() + other.toFloat());
 }
 
-Fixed	Fixed::operator-(const Fixed &other) const
+Fixed	Fixed::operator-(const Fixed &other)
 {
 	return (this->toFloat() - other.toFloat());
 }
 
-Fixed	Fixed::operator*(const Fixed &other) const
+Fixed	Fixed::operator*(const Fixed &other)
 {
 	return (this->toFloat() * other.toFloat());
 }
 
-Fixed	Fixed::operator/(const Fixed &other) const
+Fixed	Fixed::operator/(const Fixed &other)
 {
 	if (other.fixed_point == 0)
 		return (0);
