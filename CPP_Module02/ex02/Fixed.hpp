@@ -17,18 +17,17 @@ class Fixed
 
 		Fixed	&operator=(const Fixed &other);
 
-		/***** new *****/
-		bool	operator>(const Fixed &other);
-		bool	operator<(const Fixed &other);
-		bool	operator>=(const Fixed &other);
-		bool	operator<=(const Fixed &other);
-		bool	operator==(const Fixed &other);
-		bool	operator!=(const Fixed &other);
+		bool	operator>(const Fixed &other) const;
+		bool	operator<(const Fixed &other) const;
+		bool	operator>=(const Fixed &other) const;
+		bool	operator<=(const Fixed &other) const;
+		bool	operator==(const Fixed &other) const;
+		bool	operator!=(const Fixed &other) const;
 
-		Fixed	operator+(const Fixed &other);
-		Fixed	operator-(const Fixed &other);
-		Fixed	operator*(const Fixed &other);
-		Fixed	operator/(const Fixed &other);
+		Fixed	operator+(const Fixed &other) const;
+		Fixed	operator-(const Fixed &other) const;
+		Fixed	operator*(const Fixed &other) const;
+		Fixed	operator/(const Fixed &other) const;
 
 		Fixed	&operator++();
 		Fixed	&operator--();
@@ -36,13 +35,11 @@ class Fixed
 		Fixed	operator++(int);
 		Fixed	operator--(int);
 
-		/***************/
 		static Fixed &min(Fixed &nb_one, Fixed &nb_two);
 		static const Fixed &min(const Fixed &nb_one, const Fixed &nb_two);
 
 		static Fixed &max(Fixed &nb_one, Fixed &nb_two);
 		static const Fixed &max(const Fixed &nb_one, const Fixed &nb_two);
-		/***************/
 
 		int		getRawBits(void) const;
 		void	setRawBits(int const raw);
