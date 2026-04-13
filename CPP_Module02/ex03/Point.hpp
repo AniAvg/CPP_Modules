@@ -7,7 +7,7 @@ class	Point
 {
 	private:
 		const Fixed	x;
-		const Fixed	y; 
+		const Fixed	y;
 	public:
 		Point();
 		Point(const float nb1, const float nb2);
@@ -15,6 +15,8 @@ class	Point
 		~Point();
 
 		Point& operator=(const Point &other);
+		const Fixed&	get_x() const;
+		const Fixed&	get_y() const;
 };
 
 bool bsp( Point const a, Point const b, Point const c, Point const point);

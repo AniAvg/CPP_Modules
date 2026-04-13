@@ -40,7 +40,6 @@ void	Fixed::setRawBits(int const raw)
 }
 
 
-///////////////////////////////////
 Fixed::Fixed(const int n)
 {
 	std::cout << "Int constructor called" << std::endl;
