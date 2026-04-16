@@ -50,7 +50,7 @@ void	ScavTrap::guardGate()
 		std::cout << "ScavTrap " << name << " is dead" << std::endl;
 		return ;
 	}
-	std::cout << "ScavTrap " << name << " is now in Gate kepper mode" << std::endl;
+	std::cout << "ScavTrap " << name << " is now in Gate keeper mode" << std::endl;
 }
 
 

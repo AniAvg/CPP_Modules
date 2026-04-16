@@ -5,13 +5,9 @@ ClapTrap::ClapTrap() : name("Default"), hit_points(10), energy_points(10), attac
 	std::cout << "ClapTrap default constructor called" << std::endl;
 }
 
-ClapTrap::ClapTrap(const std::string &name)
+ClapTrap::ClapTrap(const std::string &name) : name(name), hit_points(10), energy_points(10), attack_damage(0)
 {
 	std::cout << "ClapTrap constructor with name called" << std::endl;
-	this->name = name;
-	hit_points = 10;
-	energy_points = 10;
-	attack_damage = 0;
 }
 
 ClapTrap::~ClapTrap()
@@ -22,12 +18,9 @@ ClapTrap::~ClapTrap()
 
 
 ClapTrap::ClapTrap(const ClapTrap& other)
+	: name(other.name), hit_points(other.hit_points), energy_points(other.energy_points), attack_damage(other.attack_damage)
 {
 	std::cout << "ClapTrap Copy constructor called" << std::endl;
-	name = other.name;
-	hit_points = other.hit_points;
-	energy_points = other.energy_points;
-	attack_damage = other.attack_damage;
 }
 
 ClapTrap&	ClapTrap::operator=(const ClapTrap &other)
