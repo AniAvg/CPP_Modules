@@ -25,10 +25,11 @@ ClapTrap::ClapTrap(const ClapTrap& other)
 
 ClapTrap&	ClapTrap::operator=(const ClapTrap &other)
 {
-	std::cout << "ClapTrap Copy assignment operator called" << std::endl;
 
 	if (this != &other)
 	{
+		std::cout << "ClapTrap Copy assignment operator called" << std::endl;
+		
 		name = other.name;
 		hit_points = other.hit_points;
 		energy_points = other.energy_points;
