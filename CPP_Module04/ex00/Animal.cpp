@@ -2,7 +2,7 @@
 
 Animal::Animal()
 {
-	type = "Animal";
+	this->type = "Animal";
 	std::cout << "Animal default constructor called" << std::endl;
 }
 
