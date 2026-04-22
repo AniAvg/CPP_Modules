@@ -27,10 +27,6 @@ int	main()
 	d = b;
 	d.attack("assigned_target");
 
-	d = d;
-	d.attack("self_assign");
-
-
 	return 0;
 }
 
