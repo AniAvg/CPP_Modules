@@ -54,13 +54,19 @@ Character::~Character()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		delete this->inventory[i];
-		this->inventory[i] = NULL;
+		if (this->inventory[i])
+		{
+			delete this->inventory[i];
+			this->inventory[i] = NULL;
+		}
 	}
 	for (int i = 0; i < floor_count; i++)
 	{
-		delete this->floor[i];
-		this->floor[i] = NULL;
+		if (this->floor[i])
+		{
+			delete this->floor[i];
+			this->floor[i] = NULL;
+		}
 	}
 }
 
@@ -89,7 +95,7 @@ void Character::unequip(int idx)
 {
 	if (idx >= 0 && idx <= 3)
 	{
-		if (this->inventory[idx] != NULL)
+		if (this->inventory[idx] != NULL && floor_count < 256)
 		{
 			this->floor[floor_count] = this->inventory[idx];
 			floor_count++;
