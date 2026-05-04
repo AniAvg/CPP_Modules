@@ -22,5 +22,10 @@ int	main()
 	for (int i = 0; i < 10; i++)
 		delete animals[i];
 
+	Dog d1;
+	Dog d2(d1);
+	Cat c1;
+	Cat c2;
+	c2 = c1;
 	return 0;
 }
