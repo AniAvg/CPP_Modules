@@ -1,62 +1,90 @@
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 int	main()
 {
 	try
 	{
-		Bureaucrat a("Annie", 5);
-		std::cout << a << std::endl;
-
-		a.increment_grade();
-		std::cout << "Incrementing: " << a << std::endl;
-
-		a.decrement_grade();
-		a.decrement_grade();
-		std::cout << "Decrementing: " << a << std::endl;
+		Form f("Tax Form", 50, 24);
+		std::cout << f << std::endl;
 	}
 	catch(const std::exception& e)
 	{
-		std::cout << "Exception: " << e.what() << std::endl;
+		std::cout << "Error: "<< e.what() << std::endl;
 	}
 
 	std::cout << "\n";
 
 	try
 	{
-		Bureaucrat b("Bob", 0);
+		Form f("Tax Form", 0, 25);
+		std::cout << f << std::endl;
 	}
-	catch(const std::exception& e)
+	catch (std::exception& e)
 	{
-		std::cout << "Exception: " << e.what() << std::endl;;
+		std::cout << "Error: " << e.what() << std::endl;
 	}
 
 	std::cout << "\n";
 
 	try
 	{
-		Bureaucrat c("Cloe", 150);
-		std::cout << c << std::endl;
-
-		c.decrement_grade();
+		Form f("Tax Form", 151, 25);
+		std::cout << f << std::endl;
 	}
-	catch(const std::exception& e)
+	catch (std::exception& e)
 	{
-		std::cout << "Exception: " << e.what() << std::endl;
+		std::cout << "Error: " << e.what() << std::endl;
 	}
 
 	std::cout << "\n";
 
 	try
 	{
-		Bureaucrat d("David", 1);
-		std::cout << d << std::endl;
-
-		d.increment_grade();
+		Bureaucrat b("Alice", 10);
+		Form f("Tax Form", 50, 25);
+		std::cout << b << std::endl;
+		std::cout << f << std::endl;
+		b.signForm(f);
+		std::cout << f << std::endl;
 	}
-	catch(const std::exception& e)
+	catch (std::exception& e)
 	{
-		std::cout << "Exception: " << e.what() << std::endl;
+		std::cout << "Error: " << e.what() << std::endl;
 	}
+
+	std::cout << "\n";
+
+	try
+	{
+		Bureaucrat b("Bob", 100);
+		Form f("Tax Form", 50, 25);
+		std::cout << b << std::endl;
+		std::cout << f << std::endl;
+		b.signForm(f);
+		std::cout << f << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+	}
+
+	std::cout << "\n";
+
+	try
+	{
+		Bureaucrat b("Charlie", 1);
+		Form f("Tax Form", 50, 25);
+		b.signForm(f);
+		std::cout << f << std::endl;
+		b.signForm(f);
+		std::cout << f << std::endl;
+	}
+	catch (std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+	}
+
 
 	return 0;
 }
