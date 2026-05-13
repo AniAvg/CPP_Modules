@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "AForm.hpp"
 
 class RobotomyRequestForm : public AForm
 {
@@ -9,7 +10,7 @@ private:
 public:
 	RobotomyRequestForm();
 	RobotomyRequestForm(const RobotomyRequestForm& other);
-	RobotomyRequestForm& operator=(conat RobotomyRequestForm& other);
+	RobotomyRequestForm& operator=(const RobotomyRequestForm& other);
 	RobotomyRequestForm(std::string& target);
 	~RobotomyRequestForm();
 
