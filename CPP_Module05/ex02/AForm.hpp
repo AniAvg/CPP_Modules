@@ -17,7 +17,7 @@ public:
 	AForm(const std::string& name, int required_to_sign, int required_to_execute);
 	AForm(const AForm& other);
 	AForm& operator=(const AForm& other);
-	~AForm();
+	virtual ~AForm();
 
 
 	std::string getName() const;
