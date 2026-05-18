@@ -1,0 +1,28 @@
+#pragma once
+
+#include <iostream>
+#include <string>
+#include <exception>
+
+class AForm;
+
+class Intern
+{
+public:
+	Intern();
+	Intern(const Intern& other);
+	Intern& operator=(const Intern& other);
+	~Intern();
+
+	AForm* makeForm(std::string form_name, std::string target);
+
+	class FormNotFound : public std::exception
+	{
+	public:
+		const char* what() const throw()
+		{
+			return "Form not found";
+		}
+	};
+};
+
