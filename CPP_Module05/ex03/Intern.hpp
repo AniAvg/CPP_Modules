@@ -4,7 +4,10 @@
 #include <string>
 #include <exception>
 
-class AForm;
+#include "AForm.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 
 class Intern
 {

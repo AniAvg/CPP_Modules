@@ -1,38 +1,51 @@
 #include "Bureaucrat.hpp"
-#include "AForm.hpp"
-#include "ShrubberyCreationForm.hpp"
-#include "RobotomyRequestForm.hpp"
-#include "PresidentialPardonForm.hpp"
+#include "Intern.hpp"
 
 int main()
 {
+	Intern intern;
+	AForm* form;
+
+	std::cout << "\n";
+	form = intern.makeForm("shrubbery creation", "Garden");
+	delete form;
+	form = intern.makeForm("robotomy request", "Bender");
+	delete form;
+	form = intern.makeForm("presidential pardon", "Zaphod");
+	delete form;
+
+	std::cout << "\n";
 	try
 	{
-		Bureaucrat boss("Boss", 1);
-		Bureaucrat worker("Worker", 140);
-
-		ShrubberyCreationForm shrub("home");
-		RobotomyRequestForm robot("Bender");
-		PresidentialPardonForm pardon("Arthur Dent");
-
-		std::cout << "\n";
-		boss.signForm(shrub);
-		boss.executeForm(shrub);
-
-		std::cout << "\n";
-		boss.signForm(robot);
-		boss.executeForm(robot);
-
-		std::cout << "\n";
-		boss.signForm(pardon);
-		boss.executeForm(pardon);
-
-		std::cout << "\n";
-		worker.executeForm(shrub);
+		form = intern.makeForm("nothing", "Home");
 	}
 	catch (std::exception& e)
 	{
-		std::cout << "Exception: " << e.what() << std::endl;
+		std::cout << "Error: " << e.what() << std::endl;
+	}
+
+	std::cout << "\n";
+	try
+	{
+		form = intern.makeForm("", "Nobody");
+	}
+	catch(std::exception& e)
+	{
+		std::cout << "Error: " << e.what() << std::endl;
+	}
+
+	std::cout << "\n";
+	try
+	{
+		Bureaucrat high("Alice", 1);
+		form = intern.makeForm("robotomy request", "Bender");
+		high.signForm(*form);
+		high.executeForm(*form);
+		delete form;
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << std::endl;
 	}
 
 	return 0;
