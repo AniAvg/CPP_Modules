@@ -18,27 +18,37 @@ Intern& Intern::operator=(const Intern& other)
 Intern::~Intern()
 {}
 
+
+AForm* Intern::createShrubbery(std::string target)
+{
+	return (new ShrubberyCreationForm(target));
+}
+
+AForm* Intern::createRobotomy(std::string target)
+{
+	return (new RobotomyRequestForm(target));
+}
+
+AForm* Intern::createPresidential(std::string target)
+{
+	return (new PresidentialPardonForm(target));
+}
+
+
+
 AForm* Intern::makeForm(std::string form_name, std::string target)
 {
-	std::string forms[] = {"shrubbery creation", "robotomy request", "presidential pardon"};
-
+	std::string form_names[] = {"shrubbery creation", "robotomy request", "presidential pardon"};
+	AForm* (Intern::*forms[])(std::string) = {&Intern::createShrubbery, &Intern::createRobotomy, &Intern::createPresidential};
+	
 	int i = 0;
-	while (i < 3 && form_name != forms[i])
+	while (i < 3 && form_name != form_names[i])
 		i++;
 
-	switch (i)
-	{
-		case 0:
-			std::cout << "Intern creates " << forms[i] << std::endl;
-			return (new ShrubberyCreationForm(target));
-		case 1:
-			std::cout << "Intern creates " << forms[i] << std::endl;
-			return (new RobotomyRequestForm(target));
-		case 2:
-			std::cout << "Intern creates " << forms[i] << std::endl;
-			return (new PresidentialPardonForm(target));
-		default:
-			throw Intern::FormNotFound();
-	}
+	if (i == 3)
+		throw FormNotFound();
+
+	std::cout << "Intern creates " << form_names[i] << std::endl;
+	return ((this->*forms[i])(target));
 }
 

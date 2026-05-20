@@ -19,7 +19,7 @@ int main()
 	{
 		form = intern.makeForm("nothing", "Home");
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cout << "Error: " << e.what() << std::endl;
 	}
@@ -29,7 +29,7 @@ int main()
 	{
 		form = intern.makeForm("", "Nobody");
 	}
-	catch(std::exception& e)
+	catch(const std::exception& e)
 	{
 		std::cout << "Error: " << e.what() << std::endl;
 	}
@@ -43,7 +43,7 @@ int main()
 		high.executeForm(*form);
 		delete form;
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cerr << "Error: " << e.what() << std::endl;
 	}
