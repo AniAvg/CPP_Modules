@@ -20,7 +20,7 @@ int	main()
 		Form f("Tax Form", 0, 25);
 		std::cout << f << std::endl;
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cout << "Error: " << e.what() << std::endl;
 	}
@@ -32,7 +32,7 @@ int	main()
 		Form f("Tax Form", 151, 25);
 		std::cout << f << std::endl;
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cout << "Error: " << e.what() << std::endl;
 	}
@@ -48,7 +48,7 @@ int	main()
 		b.signForm(f);
 		std::cout << f << std::endl;
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cout << "Error: " << e.what() << std::endl;
 	}
@@ -64,7 +64,7 @@ int	main()
 		b.signForm(f);
 		std::cout << f << std::endl;
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cout << "Error: " << e.what() << std::endl;
 	}
@@ -80,7 +80,7 @@ int	main()
 		b.signForm(f);
 		std::cout << f << std::endl;
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		std::cout << "Error: " << e.what() << std::endl;
 	}
