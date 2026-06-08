@@ -14,10 +14,15 @@ private:
 
 	void is_special_literal(const std::string& str);
 
-	void print_char(const std::string& str);
-	void print_int(const std::string& str);
-	void print_float(const std::string& str);
-	void print_double(const std::string& str);
+	static void print_char(int value);
+	static void print_int(long value);
+	static void print_float();
+	static void print_double();
+
+	static void convert_from_char(const std::string& literal);
+	static void convert_from_int(const std::string& literal);
+	static void convert_from_float(const std::string& literal);
+	static void convert_from_double(const std::string& literal);
 
 	bool is_number(const std::string& str);
 

@@ -46,56 +46,68 @@ void ScalarConverter::is_special_literal(const std::string& str)
 }
 
 
-void ScalarConverter::print_char(const std::string& str)
+
+void ScalarConverter::convert_from_char(const std::string& literal)
 {
-	long value = std::atol(str);
+	char c = literal[1];
+	int value = static_cast<int>(c);
+	print_char(value);
+	// print_int();
+	// print_float();
+	// print_double();
+
+}
+
+void ScalarConverter::print_char(int value)
+{
 	if (value < 0 || value > 127)
 		std::cout << "char: impossible" << std::endl;
 	else if (!std::isprint(value))
-		std::cout << "char: non printable" << std::endl;
+		std::cout << "char: non displayable" << std::endl;
+	else
+		std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
+}
+
+void ScalarConverter::convert_from_int(const std::string& literal)
+{
+	if (is_number(literal))
+	{
+		long value = std::strtol(literal.c_str(), NULL, 10);
+	}
+}
+
+void ScalarConverter::print_int(long value)
+{
+	if (value > std::numeric_limits<int>::max()
+		|| value < std::numeric_limits<int>::min())
+	{
+		std::cout << "int: impossible" << std::endl;
+	}
 	else
 	{
-		char c = static_cast<char>(value);
-		std::cout << "char: '" << c << "'" << std::endl;
+		int i = static_cast<int>(value);
+		std::cout << "int: " << i << std::endl;
 	}
 }
 
-void ScalarConverter::print_int(const std::string& str)
-{
-	if (is_number(str))
-	{
-		long value = std::stol(str);
-		if (value > std::numeric_limits<int>::max()
-			|| value < std::numeric_limits<int>::min())
-		{
-			std::cout << "int: impossible" << std::endl;
-		}
-		else
-		{
-			int i = static_cast<int>(value);
-			std::cout << "int: " << i << std::endl;
-		}
-	}
-}
+// void ScalarConverter::convert_from_float(const std::string& literal)
+// {
+// 	if (is_number(literal))
+// 	{
+// 		float f = static_cast<float>(value);
+// 		std::cout << "float: " << f << std::endl;
 
-void ScalarConverter::print_float(const std::string& str)
-{
-	if (is_number(str))
-	{
-		float f = static_cast<float>(value);
-		std::cout << "float: " << f << std::endl;
+// 	}
+// }
 
-	}
-}
-
-void ScalarConverter::print_double(const std::string& str)
-{
-	if (is_number(str))
-	{
-		double d = static_cast<double>(value);
-		std::cout << "double: " << d << std::endl;
-	}
-}
+// void ScalarConverter::convert_from_double(const std::string& literal)
+// {
+// 	if (is_number(literal))
+// 	{
+// 		double d = static_cast<double>(value);
+// 		std::cout << "double: " << d << std::endl;
+// 	}
+// }
 
 
 
