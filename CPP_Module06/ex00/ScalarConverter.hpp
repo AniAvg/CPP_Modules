@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <cmath>
 
 class ScalarConverter
 {
@@ -16,8 +17,8 @@ private:
 
 	static void print_char(int value);
 	static void print_int(long value);
-	static void print_float();
-	static void print_double();
+	static void print_float(float value);
+	static void print_double(double value);
 
 	static void convert_from_char(const std::string& literal);
 	static void convert_from_int(const std::string& literal);
