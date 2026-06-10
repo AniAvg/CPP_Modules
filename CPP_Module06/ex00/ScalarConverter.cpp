@@ -75,10 +75,7 @@ void ScalarConverter::convert_from_char(const std::string& literal)
 /***************** INT ********************/
 void ScalarConverter::print_int(long value)
 {
-	if (value == std::numeric_limits<long>::max()
-			|| value == std::numeric_limits<long>::min())
-		std::cout << "int: impossible" << std::endl;
-	else if (value > std::numeric_limits<int>::max()
+	if (value > std::numeric_limits<int>::max()
 			|| value < std::numeric_limits<int>::min())
 		std::cout << "int: impossible" << std::endl;
 	else
@@ -90,7 +87,29 @@ void ScalarConverter::print_int(long value)
 
 void ScalarConverter::convert_from_int(const std::string& literal)
 {
-	long value = std::strtol(literal.c_str(), NULL, 10);
+	char* end;
+
+	errno = 0;
+	long value = std::strtol(literal.c_str(), &end, 10);
+	if (errno == ERANGE)
+	{
+		std::cout << "int: impossible" << std::endl;
+		return ;
+	}
+	if (end == literal.c_str())
+	{
+		std::cout << "int: impossible" << std::endl;
+		return ;
+	}
+	while (*end)
+	{
+		if (!std::isspace(static_cast<unsigned char>(*end)))
+		{
+			std::cout << "int: impossible" << std::endl;
+			return ;
+		}
+		end++;
+	}
 	print_int(value);
 }
 
@@ -107,15 +126,38 @@ void ScalarConverter::print_float(float value)
 		else
 			std::cout << "float: -inff" << std::endl;
 	}
-	else if (value == static_cast<int>(value))
-		std::cout << "float: " << value << ".0f" << std::endl;
 	else
-		std::cout << "float: " << value << "f" << std::endl;
+		std::cout << "float: " << std::fixed << std::setprecision(1)
+		<< value << "f" << std::endl;
 }
 
 void ScalarConverter::convert_from_float(const std::string& literal)
 {
-	float value = std::strtof(literal.c_str(), NULL);
+	char* end;
+
+	errno = 0;
+	float value = std::strtof(literal.c_str(), &end);
+	if (errno == ERANGE)
+	{
+		std::cout << "float: impossible" << std::endl;
+		return ;
+	}
+		if (end == literal.c_str())
+	{
+		std::cout << "float: impossible" << std::endl;
+		return ;
+	}
+	if (*end == 'f' || *end == 'F')
+		end++;
+	while (*end)
+	{
+		if (!std::isspace(static_cast<unsigned char>(*end)))
+		{
+			std::cout << "float: impossible" << std::endl;
+			return ;
+		}
+		end++;
+	}
 	print_float(value);
 }
 
@@ -133,13 +175,35 @@ void ScalarConverter::print_double(double value)
 			std::cout << "double: -inf" << std::endl;
 	}
 	else
-		std::cout << "double: " << value << std::endl;
+		std::cout << "double: " << std::fixed << std::setprecision(1)
+		<< value << std::endl;
 }
 
 void ScalarConverter::convert_from_double(const std::string& literal)
 {
-	
-	double d = static_cast<double>(value);
+	char* end;
+
+	errno = 0;
+	double value = std::strtod(literal.c_str(), &end);
+	if (errno == ERANGE)
+	{
+		std::cout << "double: impossible" << std::endl;
+		return ;
+	}
+		if (end == literal.c_str())
+	{
+		std::cout << "double: impossible" << std::endl;
+		return ;
+	}
+	while (*end)
+	{
+		if (!std::isspace(static_cast<unsigned char>(*end)))
+		{
+			std::cout << "double: impossible" << std::endl;
+			return ;
+		}
+		end++;
+	}
 	print_double(value);
 }
 

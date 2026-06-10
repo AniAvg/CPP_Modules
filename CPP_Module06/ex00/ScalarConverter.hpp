@@ -4,6 +4,8 @@
 #include <string>
 #include <limits>
 #include <cmath>
+#include <iomanip>
+#include <cerrno>
 
 class ScalarConverter
 {
@@ -13,7 +15,7 @@ private:
 	ScalarConverter& operator=(const ScalarConverter& other);
 	~ScalarConverter();
 
-	void is_special_literal(const std::string& str);
+	static void is_special_literal(const std::string& str);
 
 	static void print_char(int value);
 	static void print_int(long value);
@@ -25,7 +27,7 @@ private:
 	static void convert_from_float(const std::string& literal);
 	static void convert_from_double(const std::string& literal);
 
-	bool is_number(const std::string& str);
+	static bool is_number(const std::string& str);
 
 public:
 	static void convert(const std::string& literal);
