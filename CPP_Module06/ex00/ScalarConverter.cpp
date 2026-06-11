@@ -261,6 +261,11 @@ void ScalarConverter::convert(const std::string& literal)
 {
 	if (is_special_literal(literal))
 		return ;
+
+	// if (literal.length() == 1)
+	// 	convert_from_char(literal);
+
+
 	if (!is_number(literal))
 	{
 		std::cout << "char: impossible" << std::endl;
@@ -270,11 +275,13 @@ void ScalarConverter::convert(const std::string& literal)
 		return ;
 	}
 
+	bool is_char = literal.length() == 1 && !is_number(literal);
 	bool has_dot = literal.find('.') != std::string::npos;
-	bool has_f = literal[literal.length() -1] == 'f';
+	bool has_f = literal[literal.length() - 1] == 'f';
 
-	// convert_from_char(literal);
-	if (has_f)
+	if (is_char)
+		convert_from_char(literal);
+	else if (has_f)
 		convert_from_float(literal);
 	else if (has_dot)
 		convert_from_double(literal);
