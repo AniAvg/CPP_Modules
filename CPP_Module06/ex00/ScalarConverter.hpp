@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iomanip>
 #include <cerrno>
+#include <cstdlib>
 
 class ScalarConverter
 {
@@ -15,7 +16,7 @@ private:
 	ScalarConverter& operator=(const ScalarConverter& other);
 	~ScalarConverter();
 
-	static void is_special_literal(const std::string& str);
+	static bool is_special_literal(const std::string& str);
 
 	static void print_char(int value);
 	static void print_int(long value);
