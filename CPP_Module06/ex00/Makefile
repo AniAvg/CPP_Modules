@@ -14,14 +14,14 @@ all: $(NAME)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-a.out: $(OBJS)
-	$(CXX) $(OBJS) $(CXXFLAGS)
+$(NAME): $(OBJS)
+	$(CXX) $(OBJS) $(CXXFLAGS) -o $(NAME)
 
 clean:
 	rm -f $(OBJS)
 
 fclean: clean
-	rm -f a.out
+	rm -f $(NAME)
 
 re: fclean all
 
