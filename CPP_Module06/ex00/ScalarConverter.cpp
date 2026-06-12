@@ -1,5 +1,7 @@
 #include "ScalarConverter.hpp"
 
+
+
 ScalarConverter::ScalarConverter() {}
 
 ScalarConverter::ScalarConverter(const ScalarConverter& other)
@@ -14,6 +16,8 @@ ScalarConverter& ScalarConverter::operator=(const ScalarConverter& other)
 }
 
 ScalarConverter::~ScalarConverter() {}
+
+
 
 
 
@@ -49,7 +53,6 @@ bool ScalarConverter::is_special_literal(const std::string& str)
 
 
 
-/***************** CHAR *******************/
 void ScalarConverter::print_char(int value)
 {
 	if (value < 0 || value > 127)
@@ -79,7 +82,6 @@ void ScalarConverter::convert_from_char(const std::string& literal)
 
 
 
-/***************** INT ********************/
 void ScalarConverter::print_int(long value)
 {
 	if (value > std::numeric_limits<int>::max()
@@ -98,34 +100,47 @@ void ScalarConverter::convert_from_int(const std::string& literal)
 
 	errno = 0;
 	long value = std::strtol(literal.c_str(), &end, 10);
-	if (errno == ERANGE)
-	{
-		std::cout << "int: impossible 1111" << std::endl;
-		return ;
-	}
+
 	if (end == literal.c_str())
 	{
-		std::cout << "int: impossible 222" << std::endl;
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: impossible" << std::endl;
+		std::cout << "double: impossible" << std::endl;
 		return ;
 	}
+
 	while (*end)
 	{
 		if (!std::isspace(static_cast<unsigned char>(*end)))
 		{
-			std::cout << "int: impossible 33333" << std::endl;
+			std::cout << "char: impossible" << std::endl;
+			std::cout << "int: impossible" << std::endl;
+			std::cout << "float: impossible" << std::endl;
+			std::cout << "double: impossible" << std::endl;
 			return ;
 		}
 		end++;
 	}
 
-	print_char(static_cast<int>(value));
-	print_int(value);
+	bool int_overflow = (errno == ERANGE) || (value > std::numeric_limits<int>::max())
+		|| (value < std::numeric_limits<int>::min());
+
+	if (int_overflow)
+		std::cout << "char: impossible" << std::endl;
+	else
+		print_char(static_cast<int>(value));
+
+	if (int_overflow)
+		std::cout << "int: impossible" << std::endl;
+	else
+		print_int(value);
+
 	print_float(static_cast<float>(value));
 	print_double(static_cast<double>(value));
 }
 
 
-/***************** FLOAT *********************/
 void ScalarConverter::print_float(float value)
 {
 	if (std::isnan(value))
@@ -145,17 +160,14 @@ void ScalarConverter::print_float(float value)
 void ScalarConverter::convert_from_float(const std::string& literal)
 {
 	char* end;
-
 	errno = 0;
 	float value = std::strtof(literal.c_str(), &end);
-	if (errno == ERANGE)
+	if (end == literal.c_str())
 	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
 		std::cout << "float: impossible" << std::endl;
-		return ;
-	}
-		if (end == literal.c_str())
-	{
-		std::cout << "float: impossible" << std::endl;
+		std::cout << "double: impossible" << std::endl;
 		return ;
 	}
 	if (*end == 'f')
@@ -164,7 +176,10 @@ void ScalarConverter::convert_from_float(const std::string& literal)
 	{
 		if (!std::isspace(static_cast<unsigned char>(*end)))
 		{
+			std::cout << "char: impossible" << std::endl;
+			std::cout << "int: impossible" << std::endl;
 			std::cout << "float: impossible" << std::endl;
+			std::cout << "double: impossible" << std::endl;
 			return ;
 		}
 		end++;
@@ -177,7 +192,6 @@ void ScalarConverter::convert_from_float(const std::string& literal)
 }
 
 
-/******************* DOUBLE ********************/
 void ScalarConverter::print_double(double value)
 {
 	if (std::isnan(value))
@@ -197,16 +211,13 @@ void ScalarConverter::print_double(double value)
 void ScalarConverter::convert_from_double(const std::string& literal)
 {
 	char* end;
-
 	errno = 0;
 	double value = std::strtod(literal.c_str(), &end);
-	if (errno == ERANGE)
+	if (end == literal.c_str())
 	{
-		std::cout << "double: impossible" << std::endl;
-		return ;
-	}
-		if (end == literal.c_str())
-	{
+		std::cout << "char: impossible" << std::endl;
+		std::cout << "int: impossible" << std::endl;
+		std::cout << "float: impossible" << std::endl;
 		std::cout << "double: impossible" << std::endl;
 		return ;
 	}
@@ -214,6 +225,9 @@ void ScalarConverter::convert_from_double(const std::string& literal)
 	{
 		if (!std::isspace(static_cast<unsigned char>(*end)))
 		{
+			std::cout << "char: impossible" << std::endl;
+			std::cout << "int: impossible" << std::endl;
+			std::cout << "float: impossible" << std::endl;
 			std::cout << "double: impossible" << std::endl;
 			return ;
 		}
@@ -261,10 +275,11 @@ void ScalarConverter::convert(const std::string& literal)
 {
 	if (is_special_literal(literal))
 		return ;
-
-	// if (literal.length() == 1)
-	// 	convert_from_char(literal);
-
+	if (literal.length() == 1 && !std::isdigit(static_cast<unsigned char>(literal[0])))
+	{
+		convert_from_char(literal);
+		return ;
+	}
 
 	if (!is_number(literal))
 	{
@@ -275,7 +290,7 @@ void ScalarConverter::convert(const std::string& literal)
 		return ;
 	}
 
-	bool is_char = literal.length() == 1 && !is_number(literal);
+	bool is_char = false;
 	bool has_dot = literal.find('.') != std::string::npos;
 	bool has_f = literal[literal.length() - 1] == 'f';
 
