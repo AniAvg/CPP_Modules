@@ -153,8 +153,25 @@ void ScalarConverter::print_float(float value)
 			std::cout << "float: -inff" << std::endl;
 	}
 	else
-		std::cout << "float: " << std::fixed << std::setprecision(1)
-		<< value << "f" << std::endl;
+	{
+		std::ios::fmtflags flags = std::cout.flags();
+		std::streamsize prec = std::cout.precision();
+
+		double intpart;
+		if (std::modf(static_cast<double>(value), &intpart) == 0.0)
+		{
+			std::cout << "float: " << std::fixed << std::setprecision(1)
+				<< value << "f" << std::endl;
+		}
+		else
+		{
+			std::cout << "float: " << std::setprecision(std::numeric_limits<float>::digits10)
+				<< value << "f" << std::endl;
+		}
+
+		std::cout.flags(flags);
+		std::cout.precision(prec);
+	}
 }
 
 void ScalarConverter::convert_from_float(const std::string& literal)
@@ -204,8 +221,27 @@ void ScalarConverter::print_double(double value)
 			std::cout << "double: -inf" << std::endl;
 	}
 	else
-		std::cout << "double: " << std::fixed << std::setprecision(1)
-		<< value << std::endl;
+	{
+		std::ios::fmtflags flags = std::cout.flags();
+		std::streamsize prec = std::cout.precision();
+
+		double intpart;
+		if (std::modf(value, &intpart) == 0.0)
+		{
+			std::cout << "double: "
+			<< std::fixed << std::setprecision(1)
+			<< value << std::endl;
+		}
+		else
+		{
+			std::cout << "double: "
+			<< std::setprecision(std::numeric_limits<double>::digits10)
+			<< value << std::endl;
+		}
+
+		std::cout.flags(flags);
+		std::cout.precision(prec);
+	}
 }
 
 void ScalarConverter::convert_from_double(const std::string& literal)
