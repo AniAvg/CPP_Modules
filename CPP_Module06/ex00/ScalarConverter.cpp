@@ -21,7 +21,7 @@ ScalarConverter::~ScalarConverter() {}
 
 
 
-bool ScalarConverter::is_special_literal(const std::string& str)
+bool is_special_literal(const std::string& str)
 {
 	if (str == "nanf" || str == "+inff" || str == "-inff" || str == "nan"
 		|| str == "+inf" || str == "-inf")
@@ -53,7 +53,7 @@ bool ScalarConverter::is_special_literal(const std::string& str)
 
 
 
-void ScalarConverter::print_char(int value)
+void print_char(int value)
 {
 	if (value < 0 || value > 127)
 		std::cout << "char: impossible" << std::endl;
@@ -63,7 +63,7 @@ void ScalarConverter::print_char(int value)
 		std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
 }
 
-void ScalarConverter::convert_from_char(const std::string& literal)
+void convert_from_char(const std::string& literal)
 {
 	if (literal.length() > 1)
 	{
@@ -82,7 +82,7 @@ void ScalarConverter::convert_from_char(const std::string& literal)
 
 
 
-void ScalarConverter::print_int(long value)
+void print_int(long value)
 {
 	if (value > std::numeric_limits<int>::max()
 			|| value < std::numeric_limits<int>::min())
@@ -94,7 +94,7 @@ void ScalarConverter::print_int(long value)
 	}
 }
 
-void ScalarConverter::convert_from_int(const std::string& literal)
+void convert_from_int(const std::string& literal)
 {
 	char* end;
 
@@ -141,7 +141,7 @@ void ScalarConverter::convert_from_int(const std::string& literal)
 }
 
 
-void ScalarConverter::print_float(float value)
+void print_float(float value)
 {
 	if (std::isnan(value))
 		std::cout << "float: nanf" << std::endl;
@@ -174,7 +174,7 @@ void ScalarConverter::print_float(float value)
 	}
 }
 
-void ScalarConverter::convert_from_float(const std::string& literal)
+void convert_from_float(const std::string& literal)
 {
 	char* end;
 	errno = 0;
@@ -209,7 +209,7 @@ void ScalarConverter::convert_from_float(const std::string& literal)
 }
 
 
-void ScalarConverter::print_double(double value)
+void print_double(double value)
 {
 	if (std::isnan(value))
 		std::cout << "double: nan" << std::endl;
@@ -244,7 +244,7 @@ void ScalarConverter::print_double(double value)
 	}
 }
 
-void ScalarConverter::convert_from_double(const std::string& literal)
+void convert_from_double(const std::string& literal)
 {
 	char* end;
 	errno = 0;
@@ -278,7 +278,7 @@ void ScalarConverter::convert_from_double(const std::string& literal)
 
 
 
-bool ScalarConverter::is_number(const std::string& str)
+bool is_number(const std::string& str)
 {
 	int		i = 0;
 	bool	dot  = false;
