@@ -1,7 +1,10 @@
 #include "Base.hpp"
+#include <ctime>
+
 
 int main()
 {
+	std::srand(std::time(0));
 	for (int i = 0; i < 5; i++)
 	{
 		Base* obj = generate();
