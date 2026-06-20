@@ -3,8 +3,8 @@
 #include <cstddef>
 #include <iostream>
 
-template <typename T>
-void iter(T* arr, const size_t len, void (*f)(T&))
+template <typename T, typename F>
+void iter(T* arr, const size_t len, void (*f)(F&))
 {
 	size_t i = 0;
 	if (!arr || !f)
@@ -16,8 +16,8 @@ void iter(T* arr, const size_t len, void (*f)(T&))
 	}
 }
 
-template <typename T>
-void iter(const T* arr, const size_t len, void (*f)(const T&))
+template <typename T, typename F>
+void iter(const T* arr, const size_t len, void (*f)(const F&))
 {
 	size_t i = 0;
 	if (!arr || !f)
