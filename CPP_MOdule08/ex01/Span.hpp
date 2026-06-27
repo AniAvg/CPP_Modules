@@ -3,6 +3,9 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
+
 
 class Span
 {
@@ -24,31 +27,29 @@ public:
 			return ("Span is full");
 		}
 	};
-
-
-	class SpanNotFound : public std::exception
+	class NotEnoughNumbers : public std::exception
 	{
 	public:
 		const char* what() const throw()
 		{
-			return ("No span can be found");
+			return ("Not enough numbers to find a span");
 		}
 	};
 
 	void addNumber(int nb);
 
-	int shortestSpan();
-	int longestSpan();
+	int shortestSpan() const;
+	int longestSpan() const;
 
 	template <typename Iterator>
 	void addNumbersRange(Iterator begin, Iterator end)
 	{
-		if (std::distance(begin, end) >= N)
+		if (numbers.size() + std::distance(begin, end) > N)
 			throw SpanFullException();
 		while (begin != end)
 		{
 			numbers.push_back(*begin);
-			begin++;
+			++begin;
 		}
 	}
 };
