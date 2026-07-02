@@ -17,8 +17,11 @@ public:
 	~BitcoinExchange();
 
 	void loadDatabase(std::string filename);
+	void processInput(std::string filename);
 
+	
 private:
 	bool is_valid_date(std::stirng date);
 	bool is_valid_value(std::string value);
+	double findRate(std::string date);
 };
