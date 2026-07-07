@@ -8,5 +8,15 @@ int	main(int argc, char** argv)
 		return 1;
 	}
 
+	BitcoinExchange btc;
+	try
+	{
+		btc.loadDatabase("data.csv");
+		btc.processInput(argv[1]);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
 	return 0;
 }

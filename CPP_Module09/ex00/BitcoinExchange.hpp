@@ -2,8 +2,9 @@
 
 #include <iostream>
 #include <map>
-#include <stirng>
+#include <string>
 
+#include <sstream>
 #include <fstream>
 
 class BitcoinExchange
@@ -19,9 +20,10 @@ public:
 	void loadDatabase(std::string filename);
 	void processInput(std::string filename);
 
-	
+
 private:
-	bool is_valid_date(std::stirng date);
-	bool is_valid_value(std::string value);
+	bool is_valid_date(const std::string& date);
+	bool is_valid_value(const std::string& value);
 	double findRate(std::string date);
+	std::string trim(const std::string& s);
 };
