@@ -34,7 +34,10 @@ void BitcoinExchange::loadDatabase(std::string filename)
 	{
 		size_t comma = line.find(',');
 		if (comma == std::string::npos)
-			std::cerr << "Error: bad input => " << line  << std::endl;
+		{
+			std::cerr << "Error: bad input => " << line << std::endl;
+			continue;
+		}
 		std::string date = line.substr(0, comma);
 		double rate = atof(line.substr(comma + 1).c_str());
 
@@ -50,7 +53,7 @@ void BitcoinExchange::processInput(std::string filename)
 
 	std::string line;
 	getline(file, line);
-	if(line != "date | value\r")
+	if(line != "date | value")
 		throw std::runtime_error("Error: title not found.");
 
 	while (getline(file, line))
@@ -92,10 +95,20 @@ void BitcoinExchange::processInput(std::string filename)
 			continue;
 		}
 
-		double rate = findRate(date);
+		try
+		{
+			double rate = findRate(date);
+			double result = value * rate;
 
-		std::cout << date << " => " << value << " = " << value * rate
-		<< std::endl;
+			std::ostringstream oss;
+			oss << std::fixed << std::setprecision(2) << result;
+
+			std::cout << date << " => " << value << " = " << oss.str() << std::endl;
+		}
+		catch (const std::exception& e)
+		{
+			std::cerr << e.what() << '\n';
+		}
 	}
 }
 
