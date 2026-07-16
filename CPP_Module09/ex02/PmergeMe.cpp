@@ -58,157 +58,197 @@ void PmergeMe::parsing(int argc, char **argv)
 
 
 
+/////////////////
+///////////
+////
 
-void PmergeMe::mergeInsertVector(std::vector<int>& v)
+std::vector<size_t> PmergeMe::insertionOrder(size_t count) const
 {
-	if (v.size() <= 1)
-		return ;
+	std::vector<size_t> order;
+	if (count == 0)
+		return order;
 
-	std::vector< std::pair<int,int> > v_pairs;
-	bool has_odd = false;
-	int odd = 0;
+	order.push_back(0);
+	if (count == 1)
+		return order;
 
-	makePairsVector(v, v_pairs, has_odd, odd);
+	std::vector<size_t> jac;
+	jac.push_back(0);
+	jac.push_back(1);
+	while (jac.back() < count)
+		jac.push_back(jac[jac.size() - 1] + 2 * jac[jac.size() - 2]);
 
-
-	std::vector<int> mainChain;
-	std::vector<int> pending;
-
-	for (size_t i = 0; i < v_pairs.size(); i++)
+	size_t inserted = 1;
+	for (size_t g = 2; g < jac.size() && inserted < count; g++)
 	{
-		mainChain.push_back(v_pairs[i].second);
-		pending.push_back(v_pairs[i].first);
+		size_t hi = jac[g];
+		size_t lo = jac[g - 1];
+		if (hi > count)
+			hi = count;
+		for (size_t idx = hi; idx > lo; idx--)
+		{
+			order.push_back(idx - 1);
+			inserted++;
+		}
 	}
-	mergeInsertVector(mainChain);
-	insertPendingVector(mainChain, pending, has_odd, odd);
-
-	v = mainChain;
+	return order;
 }
 
-void PmergeMe::mergeInsertDeque(std::deque<int>& d)
+size_t PmergeMe::binarySearchVector(const std::vector<int>& chain, size_t left, size_t right, int i) const
 {
-	if (d.size() <= 1)
-		return ;
-
-	std::deque< std::pair<int, int> > d_pairs;
-	bool has_odd = false;
-	int odd = 0;
-
-	makePairsDeque(d, d_pairs, has_odd, odd);
-
-	std::deque<int> mainChain;
-	std::deque<int> pending;
-
-
-	for (size_t i = 0; i < d_pairs.size(); i++)
+	int value = vector[i];
+	while (left < right)
 	{
-		mainChain.push_back(d_pairs[i].second);
-		pending.push_back(d_pairs[i].first);
+		size_t mid = left + (right - left) / 2;
+		if (vector[chain[mid]] < value)
+			left = mid + 1;
+		else
+			right = mid;
 	}
-	mergeInsertDeque(mainChain);
-	insertPendingDeque(mainChain, pending, has_odd, odd);
-
-	d = mainChain;
+	return left;
 }
 
-
-
-
-void PmergeMe::makePairsVector(const std::vector<int>& v,
-	std::vector< std::pair<int, int> >& v_pairs, bool& has_odd, int& odd)
+size_t PmergeMe::binarySearchDeque(const std::deque<int>& chain, size_t left, size_t right, int i) const
 {
-	has_odd = false;
-	odd = 0;
-	v_pairs.clear();
-
-	for (size_t i = 0; i + 1 < v.size(); i += 2)
+	int value = deque[i];
+	while (left < right)
 	{
-		int first = v[i];
-		int second = v[i + 1];
-
-		if (first > second)
-			std::swap(first, second);
-
-		v_pairs.push_back(std::make_pair(first, second));
+		size_t mid = left + (right - left) / 2;
+		if (deque[chain[mid]] < value)
+			left = mid + 1;
+		else
+			right = mid;
 	}
-
-	if (v.size() % 2)
-	{
-		has_odd = true;
-		odd = v.back();
-	}
+	return left;
 }
 
-void PmergeMe::makePairsDeque(const std::deque<int>& d,
-	std::deque< std::pair<int, int> >& d_pairs, bool& has_odd, int& odd)
+void PmergeMe::mergeInsertVector(std::vector<int>& ids)
 {
-	has_odd = false;
-	odd = 0;
-	d_pairs.clear();
+	size_t n = ids.size();
+	if (n <= 1)
+		return;
 
-	for (size_t i = 0; i + 1 < d.size(); i +=2)
+	std::vector<int> winners;
+	std::vector<int> losers;
+	winners.reserve(n / 2);
+	losers.reserve(n / 2);
+
+	size_t i = 0;
+	for (; i + 1 < n; i += 2)
 	{
-		int first = d[i];
-		int second = d[i + 1];
-
-		if (first > second)
-			std::swap(first, second);
-
-		d_pairs.push_back(std::make_pair(first, second));
+		int idA = ids[i];
+		int idB = ids[i + 1];
+		if (vector[idA] > vector[idB])
+		{
+			winners.push_back(idA);
+			losers.push_back(idB);
+		}
+		else
+		{
+			winners.push_back(idB);
+			losers.push_back(idA);
+		}
 	}
 
-	if (d.size() % 2)
+	bool hasStraggler = (n % 2 != 0);
+	int straggler = hasStraggler ? ids[n - 1] : 0;
+
+	std::vector<int> originalWinners = winners;
+	mergeInsertVector(winners);
+
+	std::vector<int> mainChain = winners;
+	std::vector<int> idPos(vector.size(), -1);
+	for (size_t p = 0; p < mainChain.size(); p++)
+		idPos[mainChain[p]] = static_cast<int>(p);
+
+	std::vector<size_t> order = insertionOrder(losers.size());
+
+	for (size_t oi = 0; oi < order.size(); oi++)
 	{
-		has_odd = true;
-		odd = d.back();
+		size_t k = order[oi];
+		int loserId = losers[k];
+		int winnerId = originalWinners[k];
+		size_t bound = static_cast<size_t>(idPos[winnerId]) + 1;
+
+		size_t insertPos = binarySearchVector(mainChain, 0, bound, loserId);
+		mainChain.insert(mainChain.begin() + insertPos, loserId);
+
+		idPos[loserId] = static_cast<int>(insertPos);
+		for (size_t p = insertPos + 1; p < mainChain.size(); p++)
+			idPos[mainChain[p]] = static_cast<int>(p);
 	}
+
+	if (hasStraggler)
+	{
+		size_t insertPos = binarySearchVector(mainChain, 0, mainChain.size(), straggler);
+		mainChain.insert(mainChain.begin() + insertPos, straggler);
+	}
+
+	ids = mainChain;
 }
 
-
-
-
-
-void PmergeMe::insertPendingVector(std::vector<int>& mainChain,
-				const std::vector<int>& pending, bool has_odd, int odd)
+void PmergeMe::mergeInsertDeque(std::deque<int>& ids)
 {
-	for (size_t i = 0; i < pending.size(); i++)
-	{
-		std::vector<int>::iterator pos =
-			std::lower_bound(mainChain.begin(), mainChain.end(), pending[i]);
+	size_t n = ids.size();
+	if (n <= 1)
+		return;
 
-		mainChain.insert(pos, pending[i]);
+	std::deque<int> winners;
+	std::deque<int> losers;
+
+	size_t i = 0;
+	for (; i + 1 < n; i += 2)
+	{
+		int idA = ids[i];
+		int idB = ids[i + 1];
+		if (deque[idA] > deque[idB])
+		{
+			winners.push_back(idA);
+			losers.push_back(idB);
+		}
+		else
+		{
+			winners.push_back(idB);
+			losers.push_back(idA);
+		}
 	}
 
-	if (has_odd)
-	{
-		std::vector<int>::iterator pos =
-			std::lower_bound(mainChain.begin(), mainChain.end(), odd);
+	bool hasStraggler = (n % 2 != 0);
+	int straggler = hasStraggler ? ids[n - 1] : 0;
 
-		mainChain.insert(pos, odd);
+	std::deque<int> originalWinners = winners;
+	mergeInsertDeque(winners);
+
+	std::deque<int> mainChain = winners;
+	std::vector<int> idPos(deque.size(), -1);
+	for (size_t p = 0; p < mainChain.size(); p++)
+		idPos[mainChain[p]] = static_cast<int>(p);
+
+	std::vector<size_t> order = insertionOrder(losers.size());
+
+	for (size_t oi = 0; oi < order.size(); oi++)
+	{
+		size_t k = order[oi];
+		int loserId = losers[k];
+		int winnerId = originalWinners[k];
+		size_t bound = static_cast<size_t>(idPos[winnerId]) + 1;
+
+		size_t insertPos = binarySearchDeque(mainChain, 0, bound, loserId);
+		mainChain.insert(mainChain.begin() + insertPos, loserId);
+
+		idPos[loserId] = static_cast<int>(insertPos);
+		for (size_t p = insertPos + 1; p < mainChain.size(); p++)
+			idPos[mainChain[p]] = static_cast<int>(p);
 	}
+
+	if (hasStraggler)
+	{
+		size_t insertPos = binarySearchDeque(mainChain, 0, mainChain.size(), straggler);
+		mainChain.insert(mainChain.begin() + insertPos, straggler);
+	}
+
+	ids = mainChain;
 }
-
-void PmergeMe::insertPendingDeque(std::deque<int>& mainChain,
-			const std::deque<int>& pending, bool has_odd, int odd)
-{
-	for (size_t i = 0; i < pending.size(); i++)
-	{
-		std::deque<int>::iterator pos =
-			std::lower_bound(mainChain.begin(), mainChain.end(), pending[i]);
-
-		mainChain.insert(pos, pending[i]);
-	}
-
-	if (has_odd)
-	{
-		std::deque<int>::iterator pos =
-			std::lower_bound(mainChain.begin(), mainChain.end(), odd);
-
-		mainChain.insert(pos, odd);
-	}
-}
-
-
 
 
 
@@ -219,28 +259,38 @@ void PmergeMe::process()
 		std::cout << vector[i] << " ";
 	std::cout << std::endl;
 
+	std::vector<int> vIds(vector.size());
+	for (size_t i = 0; i < vIds.size(); i++)
+		vIds[i] = static_cast<int>(i);
+
+
+
 	std::clock_t v_start = std::clock();
-	mergeInsertVector(vector);
+	mergeInsertVector(vIds);
 	std::clock_t v_end = std::clock();
 
+	std::deque<int> dIds(deque.size());
+	for (size_t i = 0; i < dIds.size(); i++)
+		dIds[i] = static_cast<int>(i);
 
 	std::clock_t d_start = std::clock();
-	mergeInsertDeque(deque);
+	mergeInsertDeque(dIds);
 	std::clock_t d_end = std::clock();
 
-
-
-	double v_time = static_cast<double>(v_end - v_start) * 1000000.0 / CLOCKS_PER_SEC;
-	double d_time = static_cast<double>(d_end - d_start) * 1000000.0 / CLOCKS_PER_SEC;
+	double v_time = static_cast<double>(v_end - v_start)
+		* 1000000.0 / CLOCKS_PER_SEC;
+	double d_time = static_cast<double>(d_end - d_start)
+		* 1000000.0 / CLOCKS_PER_SEC;
 
 	std::cout << "After: ";
-	for (size_t i = 0; i < vector.size(); i++)
-		std::cout << vector[i] << " ";
+	for (size_t i = 0; i < vIds.size(); i++)
+		std::cout << vector[vIds[i]] << " ";
 	std::cout << std::endl;
 
 	std::cout << "Time to process a range of " << vector.size()
 		<< " elements with std::vector : " << v_time << " us" << std::endl;
 	std::cout << "Time to process a range of " << deque.size()
 		<< " elements with std::deque : " << d_time << " us" << std::endl;
-	// ...
 }
+
+
