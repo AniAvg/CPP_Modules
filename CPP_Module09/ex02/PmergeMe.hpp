@@ -4,8 +4,9 @@
 
 #include <climits>
 #include <ctime>
+#include <cstdlib>
+#include <cctype>
 #include <sys/time.h>
-
 #include <vector>
 #include <deque>
 #include <algorithm>
